@@ -68,17 +68,17 @@ app.post("/login", async(req, res) => {
 //bcrypt.js ->
 //npm i bcryptjs
 
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 
-const securePassword = async (password) => {
-    const passhash = await bcrypt.hash(password, 10);
-    console.log(passhash);
+// const securePassword = async (password) => {
+//     const passhash = await bcrypt.hash(password, 10);
+//     console.log(passhash);
 
-    const passmatch = await bcrypt.compare(password, passhash);
-    console.log(passmatch);
-}
+//     const passmatch = await bcrypt.compare(password, passhash);
+//     console.log(passmatch);
+// }
 
-securePassword("Shubhi@1801")
+// securePassword("Shubhi@1801")
 
 
 
