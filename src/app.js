@@ -4,6 +4,8 @@ const path = require("path");
 const app = express();
 const hbs = require("hbs");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
 const Register = require("./models/register");
 
 const port = process.env.PORT || 8000;
@@ -35,6 +37,9 @@ app.post("/register", async(req, res) => {
                 password: req.body.password,
                 confirmpassword: req.body.confirmpassword
             })
+
+            const token  = await registerUser.generateAuthToken();
+            
             const userSave =  await registerUser.save();
             res.status(201).render("home");
         }else{
