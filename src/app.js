@@ -67,6 +67,26 @@ app.post("/login", async(req, res) => {
 })
 
 
+// const jwt = require("jsonwebtoken");
+// //creating token
+// //npm i jsonwebtoken
+// const createToken = async () => {
+//     const token = await jwt.sign({id:"uygdas78gduys"}, "ncajksckjdcdbchvhbfhvbfvbhfbvhfd",{
+//         expiresIn:"2 seconds"
+//     })
+//     console.log(token);
+    
+
+//     //it will return the id. i.e it tells the user is valid.
+//     const userver = await jwt.verify(token, "ncajksckjdcdbchvhbfhvbfvbhfbvhfd" );
+//     console.log(userver);
+    
+// }
+
+
+// createToken();
+
+
 //bcrypt.js ->
 //npm i bcryptjs
 
