@@ -38,7 +38,7 @@ app.post("/register", async(req, res) => {
                 confirmpassword: req.body.confirmpassword
             })
 
-            const token  = await registerUser.generateAuthToken();
+            const token  = await registerUser.generateAuthToken(); //middleware
             
             const userSave =  await registerUser.save();
             res.status(201).render("home");
@@ -59,6 +59,10 @@ app.post("/login", async(req, res) => {
         // res.send(userEmail);
         // console.log(userEmail);
         const isMatch = await bcrypt.compare(password, userEmail.password);
+
+        const token  = await userEmail.generateAuthToken();
+        console.log("login:" , token);
+
         if(isMatch){
             res.status(201).send("index");
         }
