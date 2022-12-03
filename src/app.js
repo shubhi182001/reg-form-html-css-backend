@@ -1,5 +1,3 @@
-require('dotenv').config();
-console.log(process.env.DATABASE_NAME)
 const express = require("express");
 require("./db/conn");
 const path = require("path");
