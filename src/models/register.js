@@ -1,3 +1,4 @@
+require('dotenv').config()
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -39,7 +40,7 @@ const userSchema = new mongoose.Schema({
 //we can't use call back functions here because we need to use this keyword.
 userSchema.methods.generateAuthToken = async function(){
     try{
-        const token = jwt.sign({_id: this._id.toString()}, "bdhcbjsdygdycguysgcdgycsduycgdsyg");
+        const token = jwt.sign({_id: this._id.toString()}, process.env.SECRET_KEY);
         this.tokens = this.tokens.concat({token: token});
         await this.save();
         return token;

@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require("express");
 require("./db/conn");
 const path = require("path");
@@ -60,11 +61,12 @@ app.post("/login", async(req, res) => {
         // console.log(userEmail);
         const isMatch = await bcrypt.compare(password, userEmail.password);
 
-        const token  = await userEmail.generateAuthToken();
-        console.log("login:" , token);
+        
 
         if(isMatch){
             res.status(201).send("index");
+            const token  = await userEmail.generateAuthToken();
+        console.log("login:" , token);
         }
         else{
             res.send("password is incorrect");
