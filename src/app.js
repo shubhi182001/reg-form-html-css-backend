@@ -40,7 +40,15 @@ app.post("/register", async(req, res) => {
             })
 
             const token  = await registerUser.generateAuthToken(); //middleware
-            
+
+            //res.cookie() function is used to set the cookie name to value.The value parameter may be a string or object converted to json.
+
+            res.cookie('jwt', token, {
+                expires: new Date(Date.now() + 30000),
+                httpOnly:true  //client side scripting language can't modify or delete this value
+            });
+
+
             const userSave =  await registerUser.save();
             res.status(201).render("home");
         }else{
