@@ -6,12 +6,13 @@ const app = express();
 const hbs = require("hbs");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-
+const cookieParser = require('cookie-parser');
 const Register = require("./models/register");
 
 const port = process.env.PORT || 8000;
 app.use(express.json()); //we use it in case of postman
 app.use(express.urlencoded({extended: false})); // in case we want to get data from frontend
+app.use(cookieParser());
 
 //hbs part:
 // console.log(path.join(__dirname , "../public"));
@@ -22,9 +23,17 @@ app.use(express.static(static_path));
 app.set("view engine", "hbs");
 app.set("views", templates_path);
 hbs.registerPartials(partials_path)
+
+
 app.get("/", (req, res) => {
     res.render("index");
 });
+
+//we can only access this page when cookie is matched . After login we are getting cookie here on this page:
+app.get("/secret" , (req, res) => {
+    console.log(`this is the cookie ${req.cookies.jwt}`)
+    res.render("secret");
+})
 
 app.post("/register", async(req, res) => {
     try{
@@ -44,7 +53,7 @@ app.post("/register", async(req, res) => {
             //res.cookie() function is used to set the cookie name to value.The value parameter may be a string or object converted to json.
 
             res.cookie('jwt', token, {
-                expires: new Date(Date.now() + 30000),
+                expires: new Date(Date.now() + 60000),
                 httpOnly:true,  //client side scripting language can't modify or delete this value
                 // secure: true //it will only work with https i.e secure connection only.   
             });
@@ -71,10 +80,11 @@ app.post("/login", async(req, res) => {
         const isMatch = await bcrypt.compare(password, userEmail.password);
 
         const token  = await userEmail.generateAuthToken();
-        res.cookie('login-jwt' , token, {
-            expires: new Date(Date.now() + 50000),
+        res.cookie('jwt' , token, {
+            expires: new Date(Date.now() + 60000),
             httpOnly: true  
         });
+
         console.log("login:" , token);
         if(isMatch){
             res.status(201).send("index");
