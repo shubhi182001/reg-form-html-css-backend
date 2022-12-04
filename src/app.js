@@ -45,7 +45,8 @@ app.post("/register", async(req, res) => {
 
             res.cookie('jwt', token, {
                 expires: new Date(Date.now() + 30000),
-                httpOnly:true  //client side scripting language can't modify or delete this value
+                httpOnly:true,  //client side scripting language can't modify or delete this value
+                // secure: true //it will only work with https i.e secure connection only.   
             });
 
 
@@ -69,12 +70,14 @@ app.post("/login", async(req, res) => {
         // console.log(userEmail);
         const isMatch = await bcrypt.compare(password, userEmail.password);
 
-        
-
+        const token  = await userEmail.generateAuthToken();
+        res.cookie('login-jwt' , token, {
+            expires: new Date(Date.now() + 50000),
+            httpOnly: true  
+        });
+        console.log("login:" , token);
         if(isMatch){
             res.status(201).send("index");
-            const token  = await userEmail.generateAuthToken();
-        console.log("login:" , token);
         }
         else{
             res.send("password is incorrect");
