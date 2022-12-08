@@ -30,8 +30,8 @@ app.get("/", (req, res) => {
 });
 
 //we can only access this page when cookie is matched . After login we are getting cookie here on this page:
-app.get("/secret" , (req, res) => {
-    console.log(`this is the cookie ${req.cookies.jwt}`)
+app.get("/secret" ,  (req, res) => {
+    console.log(`requesting cookie after login ${req.cookies.jwt}`);
     res.render("secret");
 })
 
@@ -80,10 +80,10 @@ app.post("/login", async(req, res) => {
 
         const token  = await userEmail.generateAuthToken();
         res.cookie('jwt' , token, {
-            expires: new Date(Date.now() + 60000),
+            expires: new Date(Date.now() + 600000),
             httpOnly: true  
         });
-
+        
         console.log("login:" , token);
         if(isMatch){
             res.status(201).render("home", { title: "Hey", message: "Hello there!" });  //on successful login it will render the home page.
