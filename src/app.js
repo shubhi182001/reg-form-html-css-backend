@@ -57,10 +57,9 @@ app.post("/register", async(req, res) => {
                 httpOnly:true,  //client side scripting language can't modify or delete this value
                 // secure: true //it will only work with https i.e secure connection only.   
             });
-
-
             const userSave =  await registerUser.save();
             res.status(201).render("home");
+            // res.send("Registered Successfully");
         }else{
             res.send("passwords are not matching");
         }
@@ -87,7 +86,9 @@ app.post("/login", async(req, res) => {
 
         console.log("login:" , token);
         if(isMatch){
-            res.status(201).send("index");
+            res.status(201).render("home", { title: "Hey", message: "Hello there!" });  //on successful login it will render the home page.
+            // res.send("Logged in successfully");
+            
         }
         else{
             res.send("password is incorrect");
@@ -97,6 +98,7 @@ app.post("/login", async(req, res) => {
         res.status(400).send("invalid login details");
     }
 })
+
 
 
 // const jwt = require("jsonwebtoken");
