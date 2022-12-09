@@ -35,7 +35,10 @@ app.get("/",  (req, res) => {
 app.get("/logout", auth , async(req,res) => {
     try{
         console.log(req.user);
-        res.clearCookie("jwt");
+        req.user.tokens = req.user.tokens.filter((e) => {
+            return e.token != req.token
+        })  //It clears out cookie from database. 
+        res.clearCookie("jwt"); //It clears out cookie from the webpage not from database
         console.log("logout successfully"); 
         await req.user.save();
         res.render("index")
