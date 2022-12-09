@@ -8,6 +8,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cookieParser = require('cookie-parser');
 const Register = require("./models/register");
+const auth = require("./middleware/auth")
 
 const port = process.env.PORT || 8000;
 app.use(express.json()); //we use it in case of postman
@@ -25,13 +26,15 @@ app.set("views", templates_path);
 hbs.registerPartials(partials_path)
 
 
-app.get("/", (req, res) => {
+app.get("/",  (req, res) => {
     res.render("index");
 });
 
+
+
 //we can only access this page when cookie is matched . After login we are getting cookie here on this page:
-app.get("/secret" ,  (req, res) => {
-    console.log(`requesting cookie after login ${req.cookies.jwt}`);
+app.get("/secret" ,auth, (req, res) => {
+    // console.log(`requesting cookie after login ${req.cookies.jwt}`);
     res.render("secret");
 })
 
@@ -53,7 +56,7 @@ app.post("/register", async(req, res) => {
             //res.cookie() function is used to set the cookie name to value.The value parameter may be a string or object converted to json.
 
             res.cookie('jwt', token, {
-                expires: new Date(Date.now() + 60000),
+                expires: new Date(Date.now() + 600000),
                 httpOnly:true,  //client side scripting language can't modify or delete this value
                 // secure: true //it will only work with https i.e secure connection only.   
             });
@@ -80,13 +83,13 @@ app.post("/login", async(req, res) => {
 
         const token  = await userEmail.generateAuthToken();
         res.cookie('jwt' , token, {
-            expires: new Date(Date.now() + 600000),
+            expires: new Date(Date.now() + 60000),
             httpOnly: true  
         });
         
         console.log("login:" , token);
         if(isMatch){
-            res.status(201).render("home", { title: "Hey", message: "Hello there!" });  //on successful login it will render the home page.
+            res.status(201).render("home");  //on successful login it will render the home page.
             // res.send("Logged in successfully");
             
         }
