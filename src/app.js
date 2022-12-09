@@ -31,23 +31,40 @@ app.get("/",  (req, res) => {
 });
 
 
-
+//It logs out from single device or current device
 app.get("/logout", auth , async(req,res) => {
     try{
         console.log(req.user);
         req.user.tokens = req.user.tokens.filter((e) => {
             return e.token != req.token
         })  //It clears out cookie from database. 
+
         res.clearCookie("jwt"); //It clears out cookie from the webpage not from database
         console.log("logout successfully"); 
         await req.user.save();
         res.render("index")
-        
     }
     catch(e){
         res.status(500).send(e);
     }
 } )
+
+
+//It logs out from all devices:
+app.get("/logoutFromAllDevices", auth , async(req, res) => {
+    try{
+        req.user.tokens = [];
+        res.clearCookie();
+        console.log("Logout from all devices successfull");
+        await req.user.save();
+        res.render("index");
+    }
+    catch(e){
+        console.log(e);
+    }
+})
+
+
 
 
 
