@@ -13,6 +13,10 @@ const auth = async(req, res, next ) => {
         const user =  await Register.findOne({_id: verifyUser._id})  // We can access whole data from this id.
         console.log(user.name);
 
+
+        req.token = token;
+        req.user = user;
+
         next();
 
 

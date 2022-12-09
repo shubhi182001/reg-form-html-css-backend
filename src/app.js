@@ -32,6 +32,22 @@ app.get("/",  (req, res) => {
 
 
 
+app.get("/logout", auth , async(req,res) => {
+    try{
+        console.log(req.user);
+        res.clearCookie("jwt");
+        console.log("logout successfully"); 
+        await req.user.save();
+        res.render("index")
+        
+    }
+    catch(e){
+        res.status(500).send(e);
+    }
+} )
+
+
+
 //we can only access this page when cookie is matched . After login we are getting cookie here on this page:
 app.get("/secret" ,auth, (req, res) => {
     // console.log(`requesting cookie after login ${req.cookies.jwt}`);
